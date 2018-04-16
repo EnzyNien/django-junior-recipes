@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from mainapp import views, urls
+from mainapp import views
 
 urlpatterns = [
     re_path(r'^$', views.main, name = 'main'),
+    re_path('^auth/', include('usersapp.urls', namespace='auth')),
 ]
 
 

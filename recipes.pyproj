@@ -42,11 +42,20 @@
     <Compile Include="recipes\wsgi.py" />
     <Compile Include="recipes\__init__.py" />
     <Compile Include="usersapp\admin.py" />
+    <Compile Include="usersapp\admin.py" />
     <Compile Include="usersapp\apps.py" />
+    <Compile Include="usersapp\apps.py" />
+    <Compile Include="usersapp\migrations\0001_initial.py" />
+    <Compile Include="usersapp\migrations\__init__.py" />
     <Compile Include="usersapp\migrations\__init__.py" />
     <Compile Include="usersapp\models.py" />
+    <Compile Include="usersapp\models.py" />
     <Compile Include="usersapp\tests.py" />
+    <Compile Include="usersapp\tests.py" />
+    <Compile Include="usersapp\urls.py" />
     <Compile Include="usersapp\views.py" />
+    <Compile Include="usersapp\views.py" />
+    <Compile Include="usersapp\__init__.py" />
     <Compile Include="usersapp\__init__.py" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +63,7 @@
     <Folder Include="mainapp\migrations\" />
     <Folder Include="mainapp\templates\" />
     <Folder Include="mainapp\templates\mainapp\" />
+    <Folder Include="mainapp\templates\mainapp\includes\" />
     <Folder Include="media\" />
     <Folder Include="static\" />
     <Folder Include="recipes" />
@@ -64,14 +74,20 @@
     <Folder Include="static\fonts\" />
     <Folder Include="static\js\" />
     <Folder Include="static\img\" />
+    <Folder Include="authapp\" />
     <Folder Include="usersapp\" />
     <Folder Include="usersapp\migrations\" />
+    <Folder Include="usersapp\migrations\" />
+    <Folder Include="usersapp\migrations\__pycache__\" />
     <Folder Include="usersapp\templates\" />
+    <Folder Include="usersapp\templates\" />
+    <Folder Include="usersapp\__pycache__\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="mainapp\templates\mainapp\includes\inc__base_menu.html" />
     <Content Include="mainapp\templates\mainapp\index.html" />
     <Content Include="recipesapp\templates\index.html" />
     <Content Include="static\css\bootstrap-grid.css" />
@@ -96,6 +112,12 @@
     <Content Include="static\js\jquery.min.js" />
     <Content Include="static\js\popper.min.js" />
     <Content Include="static\js\scripts.js" />
+    <Content Include="usersapp\migrations\__pycache__\0001_initial.cpython-36.pyc" />
+    <Content Include="usersapp\migrations\__pycache__\0002_auto_20180414_2332.cpython-36.pyc" />
+    <Content Include="usersapp\migrations\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="usersapp\__pycache__\admin.cpython-36.pyc" />
+    <Content Include="usersapp\__pycache__\models.cpython-36.pyc" />
+    <Content Include="usersapp\__pycache__\__init__.cpython-36.pyc" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>
