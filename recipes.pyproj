@@ -23,6 +23,9 @@
   <ItemGroup>
     <Compile Include="mainapp\admin.py" />
     <Compile Include="mainapp\apps.py" />
+    <Compile Include="mainapp\decorators.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="mainapp\migrations\__init__.py" />
     <Compile Include="mainapp\models.py" />
     <Compile Include="mainapp\tests.py" />
@@ -45,6 +48,9 @@
     <Compile Include="usersapp\admin.py" />
     <Compile Include="usersapp\apps.py" />
     <Compile Include="usersapp\apps.py" />
+    <Compile Include="usersapp\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="usersapp\migrations\0001_initial.py" />
     <Compile Include="usersapp\migrations\__init__.py" />
     <Compile Include="usersapp\migrations\__init__.py" />
@@ -74,13 +80,13 @@
     <Folder Include="static\fonts\" />
     <Folder Include="static\js\" />
     <Folder Include="static\img\" />
-    <Folder Include="authapp\" />
     <Folder Include="usersapp\" />
     <Folder Include="usersapp\migrations\" />
     <Folder Include="usersapp\migrations\" />
     <Folder Include="usersapp\migrations\__pycache__\" />
     <Folder Include="usersapp\templates\" />
     <Folder Include="usersapp\templates\" />
+    <Folder Include="usersapp\templates\usersapp\" />
     <Folder Include="usersapp\__pycache__\" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,7 @@
     <Content Include="usersapp\migrations\__pycache__\0001_initial.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\0002_auto_20180414_2332.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="usersapp\templates\usersapp\universal.html" />
     <Content Include="usersapp\__pycache__\admin.cpython-36.pyc" />
     <Content Include="usersapp\__pycache__\models.cpython-36.pyc" />
     <Content Include="usersapp\__pycache__\__init__.cpython-36.pyc" />

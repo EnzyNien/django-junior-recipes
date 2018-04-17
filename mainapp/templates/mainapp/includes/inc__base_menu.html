@@ -7,12 +7,19 @@
 		<a class="nav-link" href="#panel-2" data-toggle="tab">Мои рецепты</a>
 	</li>
 	<li class="nav-item dropdown ml-md-auto">
-			<a class="nav-link dropdown-toggle" href="{% url 'auth:login' %}" id="navbarDropdownMenuLink" data-toggle="dropdown">Войти</a>
+	{% if is_authenticated %}
+		<a class="nav-link dropdown-toggle" href="{% url 'auth:login' %}" id="navbarDropdownMenuLink" data-toggle="dropdown">Настройки</a>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item" href="#">Редактировать рецепты</a> 
 			<div class="dropdown-divider"></div> 
+			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+				<a class="dropdown-item" href="#">Личный кабинет</a> 
+			<div class="dropdown-divider"></div> 
 			<a class="dropdown-item" href="{% url 'auth:logout' %}">Выход</a>
 		</div>
+	{% else %}
+		<a class="nav nav-pills" href="{% url 'auth:login' %}" id="nav-link">Войти</a>
+	{% endif %}
 	</li>
 </ul>
 <div class="tab-content">
