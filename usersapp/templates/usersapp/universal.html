@@ -2,11 +2,20 @@
 {% load staticfiles %}
 
 {% block center %}
+
 <div class="row" id="center">
 	<div class="col-md-4"></div>
 	<div class="col-md-4">
 		<p><h4>{{form_title}}:</h4></p>
-		<form class="form-signin" action="{% url 'auth:login' %}" method="post">
+		
+		<form class="form-signin" action="
+		{% if registration %}
+			{% url 'auth:registration' %}"
+		{% else %}
+			{% url 'auth:login' %}"
+		{% endif %}
+		method="post">
+
 			{% csrf_token %}
 			{% for item in form %}
 			<div class="form-group">
@@ -14,7 +23,7 @@
 				{{item}}
 			</div>
 			{% endfor %}
-			<button class="btn btn-primary" style="width:100%">Войти</button>
+			<button class="btn btn-primary" style="width:100%">{% if registration %}Зарегистрироваться{% else %}Войти{% endif %}</button>
 			{% for error in form.non_field_errors %}
 				<div class="form-group has-errors text-danger small">
 					{{error}}

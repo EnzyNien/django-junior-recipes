@@ -45,5 +45,6 @@ def registration(request, *args, **kwargs):
     context = {
         'form_title': "Регистрация на портале",
         'form': form,
+        'registration':True
     }
     return render(request, 'usersapp/universal.html', context)

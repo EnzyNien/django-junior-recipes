@@ -55,10 +55,16 @@ class RegistrationForm(UserCreationForm):
         for _, field in self.fields.items():
             field.widget.attrs['class'] = "form-control"
 
+    def clean_nickname(self):
+        data = self.cleaned_data['nickname']
+        if RecipesUser.objects.filter(nickname=data):
+            raise forms.ValidationError(
+                "Пользователь с таким же никнеймом уже зарегистрирован")
+        return data
 
-    #def clean_username(self):
-    #    data = self.cleaned_data['username']
-    #    if len(data) < 6:
-    #        raise forms.ValidationError(
-    #            "Login слишком короткий. Длина должна быть 6 символов минимум")
-    #    return data
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if RecipesUser.objects.filter(email=data):
+            raise forms.ValidationError(
+                "Пользователь с таким же email уже зарегистрирован")
+        return data
