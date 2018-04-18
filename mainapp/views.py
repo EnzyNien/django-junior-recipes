@@ -1,11 +1,10 @@
 from functools import wraps
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import ObjectDoesNotExist
 
-from mainapp.decorators import user_login
+from mainapp.decorators import add_userdata_to_context
 
-@user_login
+@add_userdata_to_context
 def main(request,*args,**kwargs):
-	return render(request, 'mainapp/index.html', main.context)
-
+    return redirect('recipes:all')

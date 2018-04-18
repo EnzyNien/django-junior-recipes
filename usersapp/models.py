@@ -1,3 +1,5 @@
+
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -8,25 +10,30 @@ from django.contrib.auth.models import AbstractUser
 '''
 
 class RecipesUser(AbstractUser):
-	
-	user_id = models.IntegerField(
-		verbose_name = 'персональный идентификатор',
-		default = -1,
-		blank=False)
+    
+    user_id = models.CharField(
+        verbose_name = 'персональный идентификатор',
+        max_length = 50,
+        default = -1,
+        unique = True,
+        blank=False)
 
-	nickname = models.CharField(
-		verbose_name = 'никнейм',
-		max_length=50,
-		blank=False)
+    nickname = models.CharField(
+        verbose_name = 'никнейм',
+        max_length=50,
+        unique = True,
+        blank=False)
 
-	not_delete = models.BooleanField(
-		verbose_name = 'не удаляется',
-		default=False)
+    not_delete = models.BooleanField(
+        verbose_name = 'не удаляется',
+        default=False)
 
-	class Meta():
-		ordering = ['is_superuser','username']
+    USERNAME_FIELD = 'nickname'
 
-	def save(self, *args, **kwargs):
-		if self.is_superuser:
-			self.is_active = True
-		super().save(*args, **kwargs)
+    class Meta():
+        ordering = ['user_id','username']
+
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.is_active = True
+        super().save(*args, **kwargs)

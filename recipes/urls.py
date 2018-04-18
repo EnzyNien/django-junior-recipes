@@ -21,6 +21,7 @@ from mainapp import views
 
 urlpatterns = [
     re_path(r'^$', views.main, name = 'main'),
+    re_path('^recipes/', include('recipesapp.urls', namespace='recipes')),
     re_path('^auth/', include('usersapp.urls', namespace='auth')),
 ]
 

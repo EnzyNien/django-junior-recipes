@@ -1,6 +1,6 @@
 from functools import wraps
 
-def user_login(func):
+def add_userdata_to_context(func):
 	@wraps(func)
 	def wrap(request, *args,**kwargs):
 		print(f'request = {request}')
@@ -8,10 +8,10 @@ def user_login(func):
 		print(f'args = {args}')
 		print(f'kwargs = {kwargs}')
 		user = request.user
-		user_login_dict = {
+		add_userdata_to_context_dict = {
 			'user':user,
 			'is_authenticated':user.is_authenticated
 		}
-		setattr(wrap,'context',user_login_dict)
+		setattr(wrap,'context',add_userdata_to_context_dict)
 		return func(request, *args,**kwargs)
 	return wrap

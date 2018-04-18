@@ -5,7 +5,4 @@ app_name = 'mainapp'
 
 urlpatterns = [
 	re_path(r'^$', views.main, name='main'),
-
 ]
-
-

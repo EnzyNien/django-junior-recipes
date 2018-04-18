@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 import django.forms as forms
 from usersapp.models import RecipesUser
@@ -9,30 +11,10 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['placeholder'] = "nickname or ID"
+        self.fields['username'].widget.attrs['placeholder'] = "nickname"
         self.fields['password'].widget.attrs['placeholder'] = "password"
         self.fields['username'].widget.attrs['class'] = "form-control"
         self.fields['password'].widget.attrs['class'] = "form-control"
-
-    def clean(self):
-        nickname_or_id = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-
-        if nickname_or_id and password:
-            username_from_nickname = RecipesUser.objects.filter(nickname=nickname_or_id)
-            username_from_ID = RecipesUser.objects.filter(user_id=nickname_or_id)
-            self.user_cache = authenticate(username=username,
-                                           password=password)
-            if self.user_cache is None:
-                raise forms.ValidationError(
-                    self.error_messages['invalid_login'],
-                    code='invalid_login',
-                    params={'username': self.username_field.verbose_name},
-                )
-            else:
-                self.confirm_login_allowed(self.user_cache)
-
-        return self.cleaned_data
 
 class RegistrationForm(UserCreationForm):
 
@@ -48,7 +30,7 @@ class RegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
-        self.fields['nickname'].widget.attrs['placeholder'] = "nickname or ID"
+        self.fields['nickname'].widget.attrs['placeholder'] = "nickname"
         self.fields['password1'].widget.attrs['placeholder'] = "password"
         self.fields['password2'].widget.attrs['placeholder'] = "password"
 
@@ -59,12 +41,28 @@ class RegistrationForm(UserCreationForm):
         data = self.cleaned_data['nickname']
         if RecipesUser.objects.filter(nickname=data):
             raise forms.ValidationError(
-                "Пользователь с таким же никнеймом уже зарегистрирован")
+                "Пользователь с таким никнеймом уже зарегистрирован")
         return data
 
     def clean_email(self):
         data = self.cleaned_data['email']
         if RecipesUser.objects.filter(email=data):
             raise forms.ValidationError(
-                "Пользователь с таким же email уже зарегистрирован")
+                "Пользователь с таким email уже зарегистрирован")
         return data
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.user_id = self.retun_new_id()
+        user.username = self.cleaned_data["nickname"]
+        if commit:
+            user.save()
+        return user
+
+    def retun_new_id(self):
+        _pk = RecipesUser.objects.order_by('-pk')[0]
+        _pk = str(_pk.pk+1)
+        _year = str(datetime.now().year)
+        _month = str(datetime.now().month)
+        return (f'{_pk}-{_year}-{_month}')

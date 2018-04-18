@@ -38,6 +38,7 @@
     <Compile Include="recipesapp\migrations\__init__.py" />
     <Compile Include="recipesapp\models.py" />
     <Compile Include="recipesapp\tests.py" />
+    <Compile Include="recipesapp\urls.py" />
     <Compile Include="recipesapp\views.py" />
     <Compile Include="recipesapp\__init__.py" />
     <Compile Include="recipes\settings.py" />
@@ -69,8 +70,11 @@
     <Folder Include="mainapp\migrations\" />
     <Folder Include="mainapp\templates\" />
     <Folder Include="mainapp\templates\mainapp\" />
-    <Folder Include="mainapp\templates\mainapp\includes\" />
     <Folder Include="media\" />
+    <Folder Include="media\big\" />
+    <Folder Include="media\preview\" />
+    <Folder Include="recipesapp\templates\recipesapp\" />
+    <Folder Include="recipesapp\templates\recipesapp\includes\" />
     <Folder Include="static\" />
     <Folder Include="recipes" />
     <Folder Include="recipesapp\" />
@@ -93,9 +97,12 @@
     <InterpreterReference Include="Global|PythonCore|3.6" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="mainapp\templates\mainapp\includes\inc__base_menu.html" />
-    <Content Include="mainapp\templates\mainapp\index.html" />
+    <Content Include="media\big\sloenyi-salat-s-kuricei-image-big.jpg" />
+    <Content Include="media\preview\sloenyi-salat-s-kuricei-image-big.jpg" />
     <Content Include="recipesapp\templates\index.html" />
+    <Content Include="recipesapp\templates\recipesapp\all.html" />
+    <Content Include="recipesapp\templates\recipesapp\includes\inc__base_menu.html" />
+    <Content Include="recipesapp\templates\recipesapp\main.html" />
     <Content Include="static\css\bootstrap-grid.css" />
     <Content Include="static\css\bootstrap-grid.css.map" />
     <Content Include="static\css\bootstrap-grid.min.css" />
@@ -114,10 +121,16 @@
     <Content Include="static\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="static\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="static\js\bootstrap.bundle.js" />
+    <Content Include="static\js\bootstrap.bundle.js.map" />
+    <Content Include="static\js\bootstrap.bundle.min.js" />
+    <Content Include="static\js\bootstrap.bundle.min.js.map" />
+    <Content Include="static\js\bootstrap.js" />
+    <Content Include="static\js\bootstrap.js.map" />
     <Content Include="static\js\bootstrap.min.js" />
-    <Content Include="static\js\jquery.min.js" />
+    <Content Include="static\js\bootstrap.min.js.map" />
+    <Content Include="static\js\jquery-3.3.1.min.js" />
     <Content Include="static\js\popper.min.js" />
-    <Content Include="static\js\scripts.js" />
     <Content Include="usersapp\migrations\__pycache__\0001_initial.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\0002_auto_20180414_2332.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\__init__.cpython-36.pyc" />

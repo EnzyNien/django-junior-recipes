@@ -20,7 +20,12 @@
 			{% for item in form %}
 			<div class="form-group">
 				<label for="{{item.label}}">{{item.label}}:</label>
-				{{item}}
+				{{ item }}
+				{% if item.errors %}
+					<div class="form-group has-errors text-danger small">
+					{{item.errors}}
+					</div>
+				{% endif %}
 			</div>
 			{% endfor %}
 			<button class="btn btn-primary" style="width:100%">{% if registration %}Зарегистрироваться{% else %}Войти{% endif %}</button>
@@ -29,8 +34,11 @@
 					{{error}}
 				</div>
 			{% endfor %}
+
 		</form>
+		{% if not registration %}	
 		Нет аккаунта? <a href="{% url 'auth:registration' %}">Зарегистрироваться</a>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

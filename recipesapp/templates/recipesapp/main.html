@@ -1,0 +1,60 @@
+﻿{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Рецепты</title>
+
+	{% block meta %}
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Django junior">
+    <meta name="author" content="PFT">
+	{% endblock %}
+
+	{% block css %}
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+	<link href="{% static 'css/bootstrap-reboot.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+	{% endblock %}
+
+	{% block js %}
+		<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	{% endblock %}
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">Django junior excample. Work with recipes of dishes</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% include 'recipesapp/includes/inc__base_menu.html' %}
+		</div>
+	</div>
+	</div>
+	
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			{% block center %}
+
+			{% endblock %}
+			<p></p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+
+		</div>
+		<div class="col-md-9">
+
+		</div>
+	</div>
+	</div>
+  </body>
+</html>
