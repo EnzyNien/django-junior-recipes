@@ -18,7 +18,7 @@ $("#typeof_menu_item_{{typeof_menu_item}}").addClass("active")
 </script>
 
 <br />
-<ul class="list-group">
+<ul class="list-group list-group-flush">
 {% for article in object_list %}
 	<li class="list-group-item d-flex justify-content-between align-items-center">
 		<img src="/media/{{article.img_small}}" class="rounded float-left" alt="{{article.name}}" style="height: 150px;" />

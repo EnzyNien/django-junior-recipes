@@ -36,13 +36,19 @@ class RecipesAll(ListView):
     model = Recipes
     template_name = 'recipesapp/all.html'
 
-    #def dispatch(self, *args, **kwargs):
-    #    return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs):
+        self.userdata = {
+			'user':args[0].user,
+			'is_authenticated':args[0].user.is_authenticated
+		}
+        return super().dispatch(*args, **kwargs)
+
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['typeof_choices'] = Recipes.get_typeof_choices()
         context['typeof_menu_item'] = -1
+        context.update(self.userdata)
         return context
 
 @add_userdata_to_context
