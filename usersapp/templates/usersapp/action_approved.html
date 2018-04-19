@@ -1,0 +1,14 @@
+﻿{% extends 'recipesapp/main.html' %}
+{% load staticfiles %}
+
+{% block center %}
+<div class="row" id="center">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<p><h4>{{form_title}}:</h4></p>
+		<p>Статус: успешно</p>
+		<p>Ваш ID: {{user_id}}</p>
+		<a class="btn btn-primary" href="{% url 'main' %}" role="button" style="width:100%">Перейти на главную страницу</a>
+	</div>
+</div>
+{% endblock %}

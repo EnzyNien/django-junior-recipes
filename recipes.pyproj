@@ -133,6 +133,7 @@
     <Content Include="usersapp\migrations\__pycache__\0001_initial.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\0002_auto_20180414_2332.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="usersapp\templates\usersapp\action_approved.html" />
     <Content Include="usersapp\templates\usersapp\universal.html" />
     <Content Include="usersapp\__pycache__\admin.cpython-36.pyc" />
     <Content Include="usersapp\__pycache__\models.cpython-36.pyc" />
