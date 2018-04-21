@@ -34,7 +34,11 @@ class Recipes(models.Model):
         blank=False)
     description = models.TextField(
         verbose_name = 'полное описание', 
-        blank=False)
+        blank=True)
+    description_short = models.CharField(
+        verbose_name = 'краткое описание', 
+        max_length = 100,
+        blank=True)
     img_big = models.ImageField(
         verbose_name = 'изображение (большое)', 
         upload_to=settings.BIG_IMG_DIR,

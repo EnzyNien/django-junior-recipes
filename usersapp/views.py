@@ -21,11 +21,11 @@ def login(request, *args, **kwargs):
                 if user and user.is_active:
                     auth.login(request, user)
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    context = {
+    login.context = {
         'form_title': "Авторизация на портале",
         'form': form,
     }
-    return render(request, 'usersapp/universal.html', context)
+    return render(request, 'usersapp/universal.html', login.context)
 
 def logout(request, *args, **kwargs):
     auth.logout(request)
