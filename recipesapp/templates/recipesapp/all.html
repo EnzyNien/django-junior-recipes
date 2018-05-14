@@ -4,33 +4,46 @@
 {% block center %}
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link" id ="typeof_menu_item_-1" href="{% url 'recipes:all' %}">всё</a>
+    <a class="nav-link" id ="typeof_menu_item_-1" href="{% if my %}
+															{% url 'recipes:my' %}
+														{% else %}
+															{% url 'recipes:all' %}
+														{% endif %}">всё</a>
   </li>
-   {% for item in typeof_choices %}			
+   {% for item in typeof_choices %}
   <li class="nav-item">
-    <a class="nav-link" id ="typeof_menu_item_{{item.0}}" href="{% url 'recipes:all_typeof' item.0 %}">{{item.1}}</a>
+    <a class="nav-link" id ="typeof_menu_item_{{item.0}}" href="{% if my %}
+															{% url 'recipes:my' item.0 %}
+														{% else %}
+															{% url 'recipes:all' item.0 %}
+														{% endif %}">{{item.1}}</a>
   </li>
   {% endfor %}
 </ul>
 
 <script>
-$("#typeof_menu_item_{{typeof_menu_item}}").addClass("active")
+	$("#typeof_menu_item_{{typeof_menu_item}}").addClass("active")
 </script>
 
 <br />
 <div class="container-fluid border">
-{% for article in object_list %}
+{% for item in object_list %}
 {% if forloop.counter0|divisibleby:3 %}<div class="card-deck">{% endif %}
 		<div class="col-lg-4 col-md-6 mb-4">
           <div class="card">
-            <img class="card-img-top rounded float-left" src="/media/{{article.img_small}}" alt="{{article.name}}">
+            <a href="{% url 'recipes:recipe' item.pk %}">
+				<img class="card-img-top rounded float-left" src="/media/{{item.img_small}}" alt="{{item.name}}"/>
+				</a>
             <div class="card-body" style="height: 10rem;">
-              <h4 class="card-title">{{article.name}} {{article.get_typeof_str}}</h4>
-              <p class="card-text">{{article.description_short}}</p>
+                <h4 class="card-title">{{item.name}} - {{item.get_typeof_str}}</h4>
+                <p class="card-text">{{item.description_short}}</p>
             </div>
-            <div class="card-footer">
-              <a href="{% url 'recipes:recipe' article.pk %}" class="btn btn-link">Открыть...</a>
-			  <small class="text-muted">Last updated 3 mins ago</small>
+
+            <div class="card-footer d-flex">
+              <div class="item">
+              <a class ="item_href" href="{% url 'recipes:like' item.pk %}"><small class="p-2 far fa-thumbs-up", id="{{item.pk}}"></small></a>
+              </div>
+			  <small class="p-2 ml-auto">Обновлено: {{item.update_date|date}}</small>
             </div>
           </div>
 		</div>
@@ -39,25 +52,28 @@ $("#typeof_menu_item_{{typeof_menu_item}}").addClass("active")
 	<h3>Пусто :(</h3>
 {% endfor %}
 </div>
+
+<script>
+    $('.item .item_href').each(function () {
+        $(this).removeAttr('href'); 
+    });
+
+    $('.item small').each(function () {
+        $(this).click(function () {
+            var id = $(this).attr('id') 
+            console.log(id);
+            $.ajax({
+                type: 'post',
+                url: '/recipes/like/' + id + '/',
+                contentType: 'application/json; charset=utf-8',
+                success: function (data, textStatus) { 
+                    $.each(data, function(i, val) {
+                    });
+                }
+            });
+        });
+    });
+
+
+ </script>
 {% endblock %}
-
-
-<div class="container-fluid border">
-{% for article in object_list %}
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card">
-            <img class="card-img-top rounded float-left" src="/media/{{article.img_small}}" alt="{{article.name}}">
-            <div class="card-body" style="height: 10rem;">
-              <h4 class="card-title">{{article.name}} {{article.get_typeof_str}}</h4>
-              <p class="card-text">{{article.description_short}}</p>
-            </div>
-            <div class="card-footer">
-              <a href="{% url 'recipes:recipe' article.pk %}" class="btn btn-link">Открыть...</a>
-			  <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
-          </div>
-        </div>
-{% empty %}
-	<h3>Пусто :(</h3>
-{% endfor %}
-</div>

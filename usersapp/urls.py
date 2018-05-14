@@ -8,6 +8,7 @@ urlpatterns = [
     re_path(r'^login/$', views.login, name='login'),
     re_path(r'^logout/$', views.logout, name='logout'),
     re_path(r'^registration/$', views.registration, name='registration'),
+    re_path(r'^room/$', views.room, name='room'),
 ]
 
 

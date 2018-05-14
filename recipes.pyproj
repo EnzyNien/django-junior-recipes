@@ -99,6 +99,7 @@
   <ItemGroup>
     <Content Include="media\big\sloenyi-salat-s-kuricei-image-big.jpg" />
     <Content Include="media\preview\sloenyi-salat-s-kuricei-image-big.jpg" />
+    <Content Include="recipesapp\templates\recipesapp\recipe.html" />
     <Content Include="recipesapp\templates\recipesapp\all.html" />
     <Content Include="recipesapp\templates\recipesapp\includes\inc__base_menu.html" />
     <Content Include="recipesapp\templates\recipesapp\main.html" />
@@ -134,6 +135,7 @@
     <Content Include="usersapp\migrations\__pycache__\0002_auto_20180414_2332.cpython-36.pyc" />
     <Content Include="usersapp\migrations\__pycache__\__init__.cpython-36.pyc" />
     <Content Include="usersapp\templates\usersapp\action_approved.html" />
+    <Content Include="usersapp\templates\usersapp\room.html" />
     <Content Include="usersapp\templates\usersapp\universal.html" />
     <Content Include="usersapp\__pycache__\admin.cpython-36.pyc" />
     <Content Include="usersapp\__pycache__\models.cpython-36.pyc" />

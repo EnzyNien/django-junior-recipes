@@ -1,3 +1,6 @@
+import os
+import json
+
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -57,24 +60,24 @@ class Recipes(models.Model):
         RecipesUser, 
         on_delete=models.CASCADE,
         blank=False)
-    likes = models.PositiveIntegerField(
-        verbose_name='лайки',
-        default=0,
-        blank=True,
-        null=False)
+    #likes = models.PositiveIntegerField(
+    #    verbose_name='лайки',
+    #    default=0,
+    #    blank=True,
+    #    null=False)
     is_active = models.BooleanField(
         verbose_name = 'активность',
         default=True)
-    create_date = models.DateField(
+    create_date = models.DateTimeField(
         verbose_name='дата создания',
         auto_now_add=True)
-    update_date = models.DateField(
+    update_date = models.DateTimeField(
         verbose_name='дата обновления',
         auto_now=True)
 
     @property
     def get_typeof_str(self):
-        result = list(filter(lambda x: x == self.typeof, Recipes.typeof_choices))
+        result = list(filter(lambda x: x[0] == self.typeof, Recipes.typeof_choices))
         if result:
             return result[0][1]
         else:
@@ -84,7 +87,46 @@ class Recipes(models.Model):
     def get_typeof_choices(cls):
         return cls.typeof_choices
 
-    
+class Likes(models.Model):
+
+    recipes = models.ForeignKey(
+        Recipes, 
+        verbose_name = 'рецепт',
+        on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        RecipesUser, 
+        on_delete=models.CASCADE,
+        blank=False)
+
+    @staticmethod
+    def get_likes_by_recipes(recipes):
+        return Likes.objects.filter(recipes = recipes).count()
+
+    @staticmethod
+    def get_likes_by_recipe_pk(pk):
+        return Likes.objects.filter(recipes__pk = pk).count()
+
+    @staticmethod
+    def click(pk, user):
+        new_like = None
+        already_exists = False
+        error = False
+        resipe = Recipes.objects.filter(pk = pk)
+        if resipe:
+            resipe = resipe[0]
+        else:
+            error = True
+        like = Likes.objects.filter(recipes = resipe, user=user)
+        if like:
+            already_exists = True
+            like.delete()
+        else:
+            try:
+                new_like = cls(recipes=resipe,user=user)
+            except:
+                error = True
+        count = get_likes_by_recipes(recipes)
+        return json.dumps({'error':error,'already_exists':already_exists,'count':count})
 
 class RecipesStep(models.Model):
 
@@ -116,9 +158,13 @@ class Hashtags(models.Model):
     class Meta():
         ordering = ['recipes','name']
 
-    @property
-    def get_hashtag_by_recipes(self):
-        return Hashtags.objects.filter(recipes=self.recipes)
+    @staticmethod
+    def get_hashtag_by_recipe(recipe):
+        return Hashtags.objects.filter(recipes=recipe)
+
+    #def get_hashtag_by_recipe(self, recipes):
+    #    for r in recipes:
+    #    return Hashtags.objects.filter(recipes=recipe)
 
     @property
     def get_all_hashtags(self):

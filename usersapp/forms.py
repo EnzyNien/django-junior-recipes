@@ -1,8 +1,12 @@
 from datetime import datetime
 
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 import django.forms as forms
 from usersapp.models import RecipesUser
+
+def add_form_control_class(fields):
+    for _, field in fields.items():
+        field.widget.attrs['class'] = "form-control"
 
 class LoginForm(AuthenticationForm):
 
@@ -13,8 +17,7 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['placeholder'] = "nickname"
         self.fields['password'].widget.attrs['placeholder'] = "password"
-        self.fields['username'].widget.attrs['class'] = "form-control"
-        self.fields['password'].widget.attrs['class'] = "form-control"
+        add_form_control_class(self.fields)
 
 class RegistrationForm(UserCreationForm):
 
@@ -33,9 +36,8 @@ class RegistrationForm(UserCreationForm):
         self.fields['nickname'].widget.attrs['placeholder'] = "nickname"
         self.fields['password1'].widget.attrs['placeholder'] = "password"
         self.fields['password2'].widget.attrs['placeholder'] = "password"
-
-        for _, field in self.fields.items():
-            field.widget.attrs['class'] = "form-control"
+        
+        add_form_control_class(self.fields)
 
     def clean_nickname(self):
         data = self.cleaned_data['nickname']
@@ -66,3 +68,16 @@ class RegistrationForm(UserCreationForm):
         _year = str(datetime.now().year)
         _month = str(datetime.now().month)
         return (f'{_pk}-{_year}-{_month}')
+
+class ChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = RecipesUser
+        fields = [
+            'first_name', 
+            'last_name',
+            ]
+
+    def __init__(self, *args, **kwargs):
+        super(ChangeForm, self).__init__(*args, **kwargs)
+        add_form_control_class(self.fields)

@@ -1,37 +1,29 @@
 from functools import wraps
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
+
 from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.decorators import user_passes_test
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.list import ListView
 
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 
-from recipesapp.models import Recipes
+from django.shortcuts import get_object_or_404
+
+from recipesapp.models import Recipes, Hashtags, Likes
 
 from mainapp.decorators import add_userdata_to_context
 
-#@add_userdata_to_context
-#def recipes_my_typeof(request,*args,**kwargs):
-#    typeof = kwargs.get('typeof', -1)
-#    user = recipes_my_typeof.context['user']
-#    recipes_my_typeof.context['object_list'] = Recipes.objects.filter(typeof=typeof, author=user)
-#    recipes_my_typeof.context['typeof_choices'] = Recipes.get_typeof_choices()
-#    return render(request, 'recipesapp/all.html', recipes_my_typeof.context)
+def return_user_recipes(user, query_set):
+    return query_set.filter(author = user)
 
-@add_userdata_to_context
-def recipes_my(request,*args,**kwargs):
-	return HttpResponse('recipes_my')
+def return_typeof_recipes(typeof, query_set):
+    return query_set.filter(typeof = typeof)
 
-@add_userdata_to_context
-def recipes_all_typeof(request,*args,**kwargs):
-    typeof = kwargs.get('typeof', -1)
-    recipes_all_typeof.context['object_list'] = Recipes.objects.filter(typeof=typeof)
-    recipes_all_typeof.context['typeof_choices'] = Recipes.get_typeof_choices()
-    recipes_all_typeof.context['typeof_menu_item'] = int(typeof)
-    return render(request, 'recipesapp/all.html', recipes_all_typeof.context)
-
-class RecipesAll(ListView):
+class Recipe_Base(ListView):
 
     model = Recipes
     template_name = 'recipesapp/all.html'
@@ -41,15 +33,37 @@ class RecipesAll(ListView):
 			'user':args[0].user,
 			'is_authenticated':args[0].user.is_authenticated
 		}
+        self.typeof = int(kwargs.get('typeof', 0))
         return super().dispatch(*args, **kwargs)
 
+    def get_context_data(self, *args, **kwargs):
+        self.context = super().get_context_data(*args, **kwargs)
+        self.context['typeof_choices'] = Recipes.get_typeof_choices()
+        self.context['typeof_menu_item'] = int(self.typeof)
+        self.context.update(self.userdata)
+        if not self.typeof == 0:
+            self.context['object_list'] = return_typeof_recipes(self.typeof, self.context['object_list'])
+
+class RecipesMy(Recipe_Base):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['typeof_choices'] = Recipes.get_typeof_choices()
-        context['typeof_menu_item'] = -1
-        context.update(self.userdata)
-        return context
+        super().get_context_data(*args, **kwargs)
+        self.context['object_list'] = return_user_recipes(self.context['user'], self.context['object_list'])
+        self.context['my'] = True
+        return self.context
+
+class RecipesAll(Recipe_Base):
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        super().get_context_data(*args, **kwargs)
+        return self.context
 
 @add_userdata_to_context
 def recipes_filter(request,*args,**kwargs):
@@ -57,4 +71,16 @@ def recipes_filter(request,*args,**kwargs):
 
 @add_userdata_to_context
 def recipe(request,*args,**kwargs):
-	return HttpResponse('recipe')
+    pk = kwargs.get('pk',-1)
+    item = get_object_or_404(Recipes, pk=pk)
+    recipe.context['item'] = item
+    recipe.context['hashtag'] = Hashtags.get_hashtag_by_recipe(item)
+    return render(request, 'recipesapp/recipe.html', recipe.context)
+
+@add_userdata_to_context
+def like(request,pk,*args,**kwargs):
+    user = like.context['user']
+    if user.is_authenticated:
+        result = Likes.click(pk,user)
+    else:
+        return 

@@ -1,0 +1,39 @@
+﻿{% extends 'recipesapp/main.html' %}
+{% load staticfiles %}
+
+{% block center %}
+
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<p><h4>{{form_title}}:</h4></p>
+		<p  class="text-center"><h5>Общая информация</h5></p>
+		<p>ID: {{user.user_id}}</p>
+		<p>nickname: {{user.nickname}}</p>
+		<p>email: {{user.email}}</p>
+		<div class="dropdown-divider"></div>
+		<form class="form-signin" action="{% url 'auth:room' %}" method="post">
+
+			{% csrf_token %}
+			{% for item in form %}
+			<div class="form-group">
+				<label for="{{item.label}}">{{item.label}}:</label>
+				{{ item }}
+				{% if item.errors %}
+					<div class="form-group has-errors text-danger small">
+					{{item.errors}}
+					</div>
+				{% endif %}
+			</div>
+			{% endfor %}
+			<button class="btn btn-primary" style="width:100%">Сохранить изменения</button>
+			{% for error in form.non_field_errors %}
+				<div class="form-group has-errors text-danger small">
+					{{error}}
+				</div>
+			{% endfor %}
+
+		</form>
+	</div>
+</div>
+{% endblock %}

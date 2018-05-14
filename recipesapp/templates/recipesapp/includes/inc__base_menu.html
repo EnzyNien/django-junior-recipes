@@ -6,9 +6,11 @@
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'recipes:all' %}">Рецепты</a>
       </li>
+	  {% if is_authenticated %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'recipes:my' %}">Мои рецепты</a>
       </li>
+	  {% endif %}
 	</ul>  
 	<ul class="nav navbar-nav navbar-right">
 	{% if is_authenticated %}
@@ -18,7 +20,7 @@
     </a>
     <div class="dropdown-menu navbar-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="#">Редактировать рецепты</a>
-        <a class="dropdown-item" href="#">Личный кабинет</a>
+        <a class="dropdown-item" href="{% url 'auth:room' %}">Личный кабинет</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'auth:logout' %}">Выход</a>
     </div>
