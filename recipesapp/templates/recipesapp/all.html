@@ -53,7 +53,25 @@
 {% endfor %}
 </div>
 
+
+
 <script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrfmiddlewaretoken = getCookie('csrftoken')
     $('.item .item_href').each(function () {
         $(this).click(function( event ) {
           event.preventDefault();
@@ -63,10 +81,11 @@
     $('.item small').each(function () {
         $(this).click(function () {
             var id_val = $(this).attr('id') 
+            
             $.ajax({
                 type: 'post',
                 url: '/recipes/like/',
-                data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id_val},
+                data: {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'id': id_val},
                 success: function (data, textStatus) { 
                     var item = $('.item #' + id_val);
                     item.text(data.count.toString());
