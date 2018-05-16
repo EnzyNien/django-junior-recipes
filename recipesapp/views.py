@@ -87,3 +87,10 @@ def like(request,*args,**kwargs):
         else:
             return Http404()
         return JsonResponse(result) 
+    elif request.method == 'GET': 
+        pk = request.GET.get('id',None)
+        try:
+            result = Likes.get_likes_by_recipe_pk(pk)
+        except:
+            result = 0
+        return JsonResponse({'count':result})
