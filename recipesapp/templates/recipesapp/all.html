@@ -41,7 +41,7 @@
 
             <div class="card-footer d-flex">
               <div class="item">
-              <a class ="item_href" href="{% url 'recipes:like' item.pk %}"><small class="p-2 far fa-thumbs-up", id="{{item.pk}}"></small></a>
+              <a class ="item_href" href="{% url 'recipes:like'%}"><small class="p-2 far fa-thumbs-up", id="{{item.pk}}"></small></a>
               </div>
 			  <small class="p-2 ml-auto">Обновлено: {{item.update_date|date}}</small>
             </div>
@@ -55,25 +55,28 @@
 
 <script>
     $('.item .item_href').each(function () {
-        $(this).removeAttr('href'); 
+        $(this).click(function( event ) {
+          event.preventDefault();
+        });
     });
 
     $('.item small').each(function () {
         $(this).click(function () {
-            var id = $(this).attr('id') 
-            console.log(id);
+            var id_val = $(this).attr('id') 
             $.ajax({
                 type: 'post',
-                url: '/recipes/like/' + id + '/',
-                contentType: 'application/json; charset=utf-8',
+                url: '/recipes/like/',
+                data: {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id_val},
                 success: function (data, textStatus) { 
-                    $.each(data, function(i, val) {
-                    });
+                    var item = $('.item #' + id_val);
+                    item.text(data.count.toString());
+                    console.log(item.attr('id'));
                 }
             });
         });
     });
 
-
  </script>
 {% endblock %}
+
+var csrfmiddlewaretoken = {{ csrf_token }}

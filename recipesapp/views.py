@@ -1,5 +1,5 @@
 from functools import wraps
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, Http404
 from django.http import JsonResponse
 
 from django.contrib.auth.models import AnonymousUser
@@ -78,9 +78,12 @@ def recipe(request,*args,**kwargs):
     return render(request, 'recipesapp/recipe.html', recipe.context)
 
 @add_userdata_to_context
-def like(request,pk,*args,**kwargs):
-    user = like.context['user']
-    if user.is_authenticated:
-        result = Likes.click(pk,user)
-    else:
-        return 
+def like(request,*args,**kwargs):
+    if request.method == 'POST':
+        user = like.context['user']
+        pk = request.POST.get('id',None)
+        if user.is_authenticated:
+            result = Likes.click(pk,user)
+        else:
+            return Http404()
+        return JsonResponse(result) 

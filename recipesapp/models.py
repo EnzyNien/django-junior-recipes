@@ -111,22 +111,23 @@ class Likes(models.Model):
         new_like = None
         already_exists = False
         error = False
-        resipe = Recipes.objects.filter(pk = pk)
-        if resipe:
-            resipe = resipe[0]
-        else:
+        try:
+            resipe_obj = Recipes.objects.get(pk=pk)
+            like = Likes.objects.filter(recipes = resipe_obj, user=user)
+        except ObjectDoesNotExist:
             error = True
-        like = Likes.objects.filter(recipes = resipe, user=user)
-        if like:
-            already_exists = True
-            like.delete()
         else:
-            try:
-                new_like = cls(recipes=resipe,user=user)
-            except:
-                error = True
-        count = get_likes_by_recipes(recipes)
-        return json.dumps({'error':error,'already_exists':already_exists,'count':count})
+            if like:
+                already_exists = True
+                like.delete()
+            else:
+                try:
+                    new_like = Likes(recipes=resipe_obj,user=user)
+                    new_like.save()
+                except:
+                    error = True
+            count = Likes.get_likes_by_recipes(resipe_obj)
+        return {'error':error,'already_exists':already_exists,'count':count}
 
 class RecipesStep(models.Model):
 
