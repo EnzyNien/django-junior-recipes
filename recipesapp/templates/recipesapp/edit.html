@@ -7,50 +7,28 @@
         <div class="col-lg-1">
         </div>
         <div class="col-lg-5 col-md-5 mb-5">
-            <div class="d-flex">
-                <h4 class="p-2">{{item.name}}</h4>
-                <div class="item ml-auto p-2">
-                    <a class ="item_href" href="{% url 'recipes:like'%}">
-                    <h4 class="far fa-thumbs-up" id="{{item.pk}}">{{item.likes}}</h4>
-                    </a>
-                </div>
-            </div>
-            {% for ht in hashtag %}
 
-            {% if forloop.first %}  
-                <div class="row container-fluid">
-            {% endif %}
-            
-            <h6><a href ="/recipes/filter?type=hashtag&val={{ht.pk|urlencode}}"> #{{ht.name}}</a></h6>
-
-            {% if forloop.last %}  
-                </div>
-            {% endif %}
-
-            {% endfor %}
-
-			<a href="{% url 'recipes:recipe' item.pk %}">
-				<img class="card-img-top rounded float-left" src="/media/{{item.img_big}}" alt="{{item.name}}"/>
-			</a>
-			<br/>
-			<br/>
-			<p class="text-justify">{{item.description}}</p>
-			<small class="text-muted">Обновлено: {{item.update_date|date}}</small>
-		</div>
-		<div class="col-lg-5 col-md-5 mb-5">
-            <div class="d-flex">
-			    <h4 class="p-2">Шаги приготовления:</h4>
-            </div>
-			<div class="row container-fluid">
-
-			<ul class="list-group list-group-flush">
-            {% for step in steps %}
-                <li class="list-group-item"> {{step.step}}</li>
-            {% empty %}
-            	<li class="list-group-item"><h3>Пусто :(</h3> </li>
-            {% endfor %}
-            </ul>
+		<form class="form-signin" action="" method="post">
+			{% csrf_token %}
+			{% for item in form %}
+			<div class="form-group">
+				<label for="{{item.label}}">{{item.label}}:</label>
+				{{ item }}
+				{% if item.errors %}
+					<div class="form-group has-errors text-danger small">
+					{{item.errors}}
+					</div>
+				{% endif %}
 			</div>
+			{% endfor %}
+			<button class="btn btn-primary" style="width:100%">{% if registration %}Зарегистрироваться{% else %}Войти{% endif %}</button>
+			{% for error in form.non_field_errors %}
+				<div class="form-group has-errors text-danger small">
+					{{error}}
+				</div>
+			{% endfor %}
+
+		</form>
 		</div>
 	</div>
 </div>

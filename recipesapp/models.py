@@ -102,6 +102,13 @@ class Likes(models.Model):
         return Likes.objects.filter(recipes__pk = pk).count()
 
     @staticmethod
+    def get_user_like_by_recipe_pk(pk, user):
+        if Likes.objects.filter(recipes__pk = pk, user = user ):
+            return True
+        else:
+            return False
+
+    @staticmethod
     def click(pk, user):
         new_like = None
         already_exists = False
@@ -113,11 +120,11 @@ class Likes(models.Model):
             error = True
         else:
             if like:
-                already_exists = True
                 like.delete()
             else:
                 try:
                     new_like = Likes(recipes=resipe_obj,user=user)
+                    already_exists = True
                     new_like.save()
                 except:
                     error = True

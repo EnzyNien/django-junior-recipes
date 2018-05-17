@@ -26,7 +26,7 @@
 </script>
 
 <br />
-<div class="container-fluid border">
+<div class="container-fluid">
 {% for item in object_list %}
 {% if forloop.counter0|divisibleby:3 %}<div class="card-deck">{% endif %}
 		<div class="col-lg-4 col-md-6 mb-4">
@@ -41,13 +41,17 @@
 
             <div class="card-footer d-flex">
               <div class="item">
-              <a class ="item_href" href="{% url 'recipes:like'%}"><small class="p-2 far fa-thumbs-up" id="{{item.pk}}"></small></a>
+                  <a class ="item_href" href="{% url 'recipes:like'%}">
+                    <small class="p-2 far fa-thumbs-up" id="{{item.pk}}"></small>
+                  </a>
               </div>
-			  <small class="p-2 ml-auto">Обновлено: {{item.update_date|date}}</small>
+                <small class="p-2 ml-auto">Обновлено: {{item.update_date|date}}</small>
             </div>
-            {% if my %}
-            <a class ="item_href" href="{% url 'recipes:edit' item.pk %}"><small class="p-2">редактировать</small></a>
+            
+            {% if my or  item.author.pk == user.pk%}
+            <a class ="item_href" href="{% url 'recipes:edit' item.pk %}"><small class="p-2 ml-auto">редактировать</small></a>
             {% endif %}
+            
           </div>
 		</div>
 {% if forloop.counter|divisibleby:3 or forloop.last %}</div><br />{% endif %}
@@ -74,6 +78,17 @@
         return cookieValue;
     }
 
+    function process_like($item, data) {
+        $item.text(' ' + data.count.toString());
+        if (data.already_exists) {
+            $item.removeClass('far').addClass('fas')
+        }
+        else
+        {
+            $item.removeClass('fas').addClass('far')
+        }
+    }
+
     var csrfmiddlewaretoken = getCookie('csrftoken')
     $('.item .item_href').each(function () {
         $(this).click(function( event ) {
@@ -83,12 +98,12 @@
 
     $('.item small').each(function () {
         var id_val = $(this).attr('id')
-        var item = $('.item #' + id_val);
+        var $item = $('.item #' + id_val);
         var post_data = { 'csrfmiddlewaretoken': csrfmiddlewaretoken, 'id': id_val } 
         var get_data = { 'id': id_val } 
 
-        $.get("/recipes/like/", get_data, function(data) {
-            item.text(' ' + data.count.toString());
+        $.get("/recipes/like/", get_data, function (data) {
+            process_like($item, data);
         });
 
         $(this).click(function () {
@@ -97,8 +112,7 @@
                 url: '/recipes/like/',
                 data: {'csrfmiddlewaretoken': csrfmiddlewaretoken, 'id': id_val},
                 success: function (data, textStatus) { 
-                    var item = $('.item #' + id_val);
-                    item.text(' ' + data.count.toString());
+                    process_like($item, data);    
                 }
             });
         });

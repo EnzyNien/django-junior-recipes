@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.list import ListView
+from django.views.generic import UpdateView
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -65,16 +66,31 @@ class RecipesAll(Recipe_Base):
         super().get_context_data(*args, **kwargs)
         return self.context
 
-class RecipesEdit(Recipe_Base):
+class RecipesEdit(UpdateView, ):
 
-    @method_decorator(login_required)
+    model = Recipes
+    fields = '__all__'
+    exclude = ('img_small', 'is_active', 'create_date', 'update_date')
+    template_name = 'recipesapp/edit.html'
+
+    def get_object(self, queryset=None):
+        pk = self.kwargs.get('pk',-1)
+        obj = get_object_or_404(Recipes,pk=pk,author=self.userdata['user'])
+        return obj
+
+    @method_decorator(login_required) 
     def dispatch(self, *args, **kwargs):
+        self.userdata = {
+			'user':args[0].user,
+			'is_authenticated':args[0].user.is_authenticated
+		}
         return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
-        super().get_context_data(*args, **kwargs)
-        self.context['object_list'] = return_user_recipes(self.context['user'], self.context['object_list'])
-        self.context['my'] = True
+        self.context = super().get_context_data(*args, **kwargs)
+        self.context['hashtag'] = Hashtags.get_hashtag_by_recipe(self.context['object'])
+        self.context['steps'] = RecipesStep.get_steps_by_recipe(self.context['object']) 
+        self.context.update(self.userdata)
         return self.context
 
 @add_userdata_to_context
@@ -93,8 +109,8 @@ def recipe(request,*args,**kwargs):
 @add_userdata_to_context
 def like(request,*args,**kwargs):
     if request.is_ajax():
+        user = like.context['user']
         if request.method == 'POST':
-            user = like.context['user']
             pk = request.POST.get('id',None)
             if user.is_authenticated:
                 result = Likes.click(pk,user)
@@ -105,6 +121,8 @@ def like(request,*args,**kwargs):
             pk = request.GET.get('id',None)
             try:
                 result = Likes.get_likes_by_recipe_pk(pk)
+                already_exists = Likes.get_user_like_by_recipe_pk(pk,user)
             except:
                 result = 0
-            return JsonResponse({'count':result})
+                already_exists = False
+            return JsonResponse({'count':result,'already_exists':already_exists})

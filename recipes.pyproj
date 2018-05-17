@@ -99,6 +99,7 @@
   <ItemGroup>
     <Content Include="media\big\sloenyi-salat-s-kuricei-image-big.jpg" />
     <Content Include="media\preview\sloenyi-salat-s-kuricei-image-big.jpg" />
+    <Content Include="recipesapp\templates\recipesapp\edit.html" />
     <Content Include="recipesapp\templates\recipesapp\recipe.html" />
     <Content Include="recipesapp\templates\recipesapp\all.html" />
     <Content Include="recipesapp\templates\recipesapp\includes\inc__base_menu.html" />
