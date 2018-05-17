@@ -11,6 +11,7 @@ urlpatterns = [
     re_path(r'like/$', views.like, name='like'),
     re_path(r'filter?(?P<param1>.+)=(?P<val1>.+)&(?P<param2>.+)=(?P<val2>.+)$', views.recipes_filter, name='filter'),
     re_path(r'^recipe/(?P<pk>\d+)/$', views.recipe, name='recipe'),
+    re_path(r'^eidt/(?P<pk>\d+)/$', views.RecipesEdit.as_view(), name='edit'),
 ]
 
 

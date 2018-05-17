@@ -45,6 +45,9 @@
               </div>
 			  <small class="p-2 ml-auto">Обновлено: {{item.update_date|date}}</small>
             </div>
+            {% if my %}
+            <a class ="item_href" href="{% url 'recipes:edit' item.pk %}"><small class="p-2">редактировать</small></a>
+            {% endif %}
           </div>
 		</div>
 {% if forloop.counter|divisibleby:3 or forloop.last %}</div><br />{% endif %}

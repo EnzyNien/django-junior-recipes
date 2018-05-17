@@ -60,11 +60,6 @@ class Recipes(models.Model):
         RecipesUser, 
         on_delete=models.CASCADE,
         blank=False)
-    #likes = models.PositiveIntegerField(
-    #    verbose_name='лайки',
-    #    default=0,
-    #    blank=True,
-    #    null=False)
     is_active = models.BooleanField(
         verbose_name = 'активность',
         default=True)
@@ -144,6 +139,10 @@ class RecipesStep(models.Model):
     
     class Meta():
         ordering = ['idx','recipes']
+    
+    @staticmethod
+    def get_steps_by_recipe(recipe):
+        return RecipesStep.objects.filter(recipes=recipe).order_by('idx')
 
 class Hashtags(models.Model):
     
@@ -162,10 +161,6 @@ class Hashtags(models.Model):
     @staticmethod
     def get_hashtag_by_recipe(recipe):
         return Hashtags.objects.filter(recipes=recipe)
-
-    #def get_hashtag_by_recipe(self, recipes):
-    #    for r in recipes:
-    #    return Hashtags.objects.filter(recipes=recipe)
 
     @property
     def get_all_hashtags(self):

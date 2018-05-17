@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
-            <div class="d-flex border">
+            <div class="d-flex">
                 <h4 class="p-2">{{item.name}}</h4>
                 <div class="item ml-auto p-2">
                     <a class ="item_href" href="{% url 'recipes:like'%}">
@@ -19,7 +19,7 @@
                 <div class="row container-fluid">
             {% endif %}
             
-            <h6><a href ="/recipes/filter?type=hashtag&val={{ht.pk|urlencode}}"> #{{ht.name}}</a></h6>       
+            <h6><a href ="/recipes/filter?type=hashtag&val={{ht.pk|urlencode}}"> #{{ht.name}}</a></h6>
 
             {% if forloop.last %}  
                 </div>
@@ -34,23 +34,22 @@
 			<br/>
 			<p class="text-justify">{{item.description}}</p>
 			<small class="text-muted">Обновлено: {{item.update_date|date}}</small>
-
-
 		</div>
 		<div class="col-lg-6 col-md-6 mb-6">
-			<h4>Шаги приготовления</h4>
-			<div class="card">
-			<a href="{% url 'recipes:recipe' item.pk %}">
-				<img class="card-img-top rounded float-left" src="/media/{{item.img_small}}" alt="{{item.name}}"/>
-			</a>
-			<div class="card-body" style="height: 10rem;">
-				<h4 class="card-title">{{item.name}} {{item.get_typeof_str}}</h4>
-				<p class="card-text">{{item.description_short}}</p>
-			</div>
-			<div class="card-footer">
-				<a href="{% url 'recipes:recipe' item.pk %}" class="btn btn-link">Открыть...</a>
-				<small class="text-muted">Last updated 3 mins ago</small>
-			</div>
+            <div class="d-flex">
+			    <h4 class="p-2">Шаги приготовления</h4>
+            </div>
+			<div class="row container-fluid">
+
+			<ul class="list-group list-group-flush">
+            {% for step in steps %}
+            <li class="list-group-item"> {{step.step}}</li>
+            {% empty %}
+                <ul class="list-group list-group-flush">
+            	    <li class="list-group-item"><h3>Пусто :(</h3> </li>
+                </ul>
+            {% endfor %}
+            </ul>
 			</div>
 		</div>
 	</div>
